@@ -423,7 +423,7 @@ setMethod("CNV.detailplot", signature(object = "CNV.analysis"),
                     col = "black", lwd = 1)
 
               segs <- GRanges(seqnames = object@seg$summary[[i]]$chrom, IRanges(start = object@seg$summary[[i]]$loc.start, end = object@seg$summary[[i]]$loc.end),
-                              seqinfo = Seqinfo(genome = "hg19"))
+                              seqinfo = seqinfo(object@anno@bins))
               segs$seg.median <- object@seg$summary[[i]]$seg.median - object@bin$shift[i]
               segs <- segs[subjectHits(findOverlaps(query = detail.gene, subject = segs, type = "any"))]
               lines(as.vector(rbind(rep(start(segs), each = 2), rep(end(segs), each = 2))),

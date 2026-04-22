@@ -398,7 +398,7 @@ setMethod("CNV.focal", signature(object = "CNV.analysis"), function(object, sig_
 
     # Perform k-means on segments to identify likely copy-number state
     segs.c <- object@seg$summary[[i]]
-    segs.c <- GRanges(seqnames = segs.c$chrom, IRanges(start = segs.c$loc.start, end = segs.c$loc.end), seqinfo = Seqinfo(genome = object@anno@args$genome))
+    segs.c <- GRanges(seqnames = segs.c$chrom, IRanges(start = segs.c$loc.start, end = segs.c$loc.end), seqinfo = seqinfo(object@anno@bins))
     seqlevels(segs.c) <- object@anno@genome$chr
     segs.c$seg.median <- object@seg$summary[[i]]$seg.median - object@bin$shift[i]
     segs.c$num.markers <- object@seg$summary[[i]]$num.mark
@@ -413,7 +413,7 @@ setMethod("CNV.focal", signature(object = "CNV.analysis"), function(object, sig_
     bins.log2 <- object@bin$ratio[[i]] - object@bin$shift[i]
     bins.c <- object@anno@bins[names(bins.log2)]
     bins.c$log2 <- as.numeric(bins.log2)
-    seqinfo(bins.c) <- Seqinfo(genome = object@anno@args$genome)
+    seqinfo(bins.c) <- seqinfo(object@anno@bins)
     bins <- sort(bins.c[queryHits(findOverlaps(bins.c, segs, type = "any"))])
     bins$state <- rank(km$centers[, 1])[km$cluster]
 
